@@ -1,12 +1,18 @@
-/* Reset and Global Styles */
-body {
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracer Study</title>
+<style>
+    body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     box-sizing: border-box;
-    background-color: #ddd;
+    background-color: #fff;
     color: #333;
-}
+    }
 
 /* Styling Navbar */
 .navbar {
@@ -56,7 +62,7 @@ transition: color 0.3s;
 .nav-links a:hover{
 color: #007BFF;
 }
-/* Login Button */
+/* Logout Button */
 .logout {
 background-color: #8A8787;
 padding: 10px 15px;
@@ -71,65 +77,35 @@ padding: 10px 15px;
 border-radius: 10px;
 }
 
-/* Main Content */
-.content {
-    text-align: center;
-    padding: 50px 20px;
-}
-
-.content h1 {
-    font-size: 36px;
-    margin-bottom: -10px;
-    margin-left: -800px;
-    margin-top: 6px;
-    color: #007BFF;
-}
-
-.subtext {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 20px;
-    font-style: italic;
-    margin-left: -800px;
-    margin-top: 30px;
-}
-
-.icon img{
-    width: 100px;
-    margin: 50px 0;
-}
-
-.description {
-    font-size: 20px;
-    line-height: 1.8;
-    margin: -3px auto;
-    max-width: 600px;
-}
-
-.divider {
-    font-size: 18px;
-    margin-top: 50px;
-    color: #333;
-}
-
-/* Footer */
 footer {
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 25px;
+text-align: center;
+padding: 10px 0;
+margin-top: 670px;
 }
 
 footer p {
-    margin: 30px;
-    color: #777;
+margin: 0;
+color: #777;
 }
-.external-link {
-    color: #1e88e5;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.external-link:hover {
-    color: #1565c0;
-    text-decoration: underline;
-}
+</style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="IMG/Logo.1.png" alt="Logo" class="logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">BERANDA</a></li>
+            <li><a href="#">PANDUAN</a></li>
+            <li><a href="#">DATA ALUMNI</a></li>
+            <li><a href="#">STATISTIK</a></li>
+            <li><a href="#" class="logout">LOGOUT</a></li>
+        </ul>
+    </nav>
+</header>
+<footer>
+    <p>Made With Kelompok 4 | &copy; 2025</p>
+</footer>
+</body>
+</html>

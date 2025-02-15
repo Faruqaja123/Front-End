@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracer Study</title>
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+  }
+  
+  /* Styling Navbar */
+  .navbar {
+  background-color: #f5f5f5;
+  padding: 15px 100px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  }
+  
+  /* Logo Container */
+  .logo-container {
+  display: flex;
+  align-items: center;
+  }
+  
+  .logo {
+  width: -10px;
+  height: 60px;
+  object-fit: cover;
+  object-position: center ;
+  margin-top: 0%;
+  margin-right: 500px;
+  margin-left: -100px;
+  }
+  
+  /* Link Navigation */
+  .nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px; /* Jarak antar item menu */
+  }
+  
+  .nav-links a {
+  text-decoration: none;
+  color: #000;
+  margin: 0 10px;
+  font-weight: lighter;
+  font-size: 16px;
+  transition: color 0.3s;
+  }
+  
+  .nav-links a:hover{
+  color: #007BFF;
+  }
+  /* Logout Button */
+  .logout {
+  background-color: #8A8787;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #000;
+  font-weight: lighter;
+  }
+  
+  .logout:hover {
+  background-color: #8A8787;
+  padding: 10px 15px; 
+  border-radius: 10px;
+  }
+  
+  .carousel {
+  width: 100%;
+  height: 1000px;
+  overflow: hidden;
+  }
+  
+  .carousel {
+  position: relative;
+  width: 1680px;
+  height: 730px;
+  object-fit: cover;
+  object-position: center;
+  margin: 0px auto;
+  overflow: hidden;
+  border-radius: 0px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Track tempat gambar */
+  .carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 1680px;
+  height: 730px;
+  object-fit: cover;
+  object-position: center ;
+  }
+  
+  /* Gambar carousel */
+  .carousel-image {
+  width: 100%;
+  flex-shrink: 0;
+  height: auto;
+  object-fit: cover;
+  }
+  
+  /* Tombol navigasi */
+  button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0);
+  color: white;
+  border: none;
+  font-size: 80px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  }
+  
+  button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  }
+  
+  .prev {
+  left: 10px;
+  }
+  
+  .next {
+  right: 10px;
+  }
+  
+  
+  .welcome-section 
+  {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    width: 30%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .welcome-section h1 {
+  color: #333;
+  }
+  
+  .welcome-section .highlight {
+  color: #007BFF;
+  }
+  
+  .welcome-section p {
+  color: #000;
+  margin: 300px 10;
+  }
+
+  .text-container {
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+  }
+  
+  .text-container.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  footer {
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 20px;
+  }
+  
+  footer p {
+  margin: 0;
+  color: #777;
+  }
+  
+</style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="IMG/Logo.1.png" alt="Logo" class="logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">BERANDA</a></li>
+            <li><a href="#">PANDUAN</a></li>
+            <li><a href="#">DATA ALUMNI</a></li>
+            <li><a href="#">STATISTIK</a></li>
+            <li><a href="#" class="logout">LOGOUT</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="carousel">
+    <button class="prev" onclick="prevSlide()">&#10094;</button>
+    <div class="carousel-track">
+        <img src="IMG/DSC00443 (3).jpg" alt="Graduation 1" class="carousel-image">
+        <img src="IMG/DSC00206.JPG" alt="Graduation 2" class="carousel-image">
+        <img src="IMG/DSC00346.JPG" alt="Graduation 3" class="carousel-image">
+        <img src="IMG/DSC00150.JPG" alt="Graduation 4" class="carousel-image">
+    </div>
+    <button class="next" onclick="nextSlide()">&#10095;</button>
+</div>
+
+<div class="welcome-section">
+    <div class="text-container" id="text">
+        <h1>Selamat Datang!</h1>
+        <h2><span class="highlight">Tracer Study</span></h2>
+        <p>SMK BP Subulul Huda</p>
+    </div>
+</div>
+
+<footer>
+    <p>Made With Kelompok 4 | &copy; 2025</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(() => {
+            document.getElementById("text").classList.add("show");
+        }, 500);
+    });
+    let currentIndex = 0;
+
+    function updateCarousel() {
+      const track = document.querySelector('.carousel-track');
+      const images = document.querySelectorAll('.carousel-image');
+      const imageWidth = images[0].clientWidth;
+    
+      track.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+    }
+    
+    function prevSlide() {
+      const images = document.querySelectorAll('.carousel-image');
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateCarousel();
+    }
+    
+    function nextSlide() {
+      const images = document.querySelectorAll('.carousel-image');
+      currentIndex = (currentIndex + 1) % images.length;
+      updateCarousel();
+    }
+    
+    window.addEventListener('resize', updateCarousel);
+    
+</script>
+<script src="b.js"></script>
+</body>
+</html>

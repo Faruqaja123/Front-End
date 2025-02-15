@@ -1,0 +1,23 @@
+/* CSS untuk pesan sukses */
+.success-message {
+    color: green;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border: 1px solid green;
+    margin-top: 30px; /* Mengatur jarak lebih dekat ke atas */
+    margin-bottom: 10px;
+}
+
+/* CSS untuk pesan error */
+.error-message {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+    background-color: #fce4e4;
+    border: 1px solid red;
+    margin-top: 30px; /* Mengatur jarak lebih dekat ke atas */
+    margin-bottom: 10px;
+}

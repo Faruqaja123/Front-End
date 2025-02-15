@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracer Study</title>
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+  }
+  
+  /* Styling Navbar */
+  .navbar {
+  background-color: #f5f5f5;
+  padding: 15px 100px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  }
+  
+  /* Logo Container */
+  .logo-container {
+  display: flex;
+  align-items: center;
+  }
+  
+  .logo {
+  width: -10px;
+  height: 60px;
+  object-fit: cover;
+  object-position: center ;
+  margin-top: 0%;
+  margin-right: 500px;
+  margin-left: -100px;
+  }
+  
+  /* Link Navigation */
+  .nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px; /* Jarak antar item menu */
+  }
+  
+  .nav-links a {
+  text-decoration: none;
+  color: #000;
+  margin: 0 10px;
+  font-weight: lighter;
+  font-size: 16px;
+  transition: color 0.3s;
+  }
+  
+  .nav-links a:hover{
+  color: #007BFF;
+  }
+  
+  /* Logout Button */
+  .logout {
+  background-color: #8A8787;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #000;
+  font-weight: lighter;
+  }
+  
+  .logout:hover {
+  background-color: #8A8787;
+  padding: 10px 15px; 
+  border-radius: 10px;
+  }
+
+  .container {
+    width: 60%;
+    margin: 20px auto;
+    background: white;
+    padding: 230px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+h2 {
+    margin-bottom: 85px;
+    margin-top: -130px;
+    text-align: center;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group input, .form-group select {
+    flex: 2;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.activities {
+    display: flex;
+    gap: 25px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.activities button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #e0e0e0;
+    color: #007BFF;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.activities button:hover {
+    background-color: #c0c0c0;
+}
+
+.buttons {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.buttons button {
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.buttons .cancel {
+    background-color: #8A8787;
+    color: #000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.buttons .submit {
+    background-color: #8A8787;
+    color: #000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.buttons .cancel:hover {
+  background-color: #c0c0c0;
+}
+
+.buttons .submit:hover {
+  background-color: #c0c0c0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+} 
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+    }
+    
+footer p {
+    margin: 0;
+    color: #777;
+    }
+    
+</style>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="IMG/Logo.1.png" alt="Logo" class="logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">BERANDA</a></li>
+            <li><a href="#">PANDUAN</a></li>
+            <li><a href="#">DATA ALUMNI</a></li>
+            <li><a href="#">STATISTIK</a></li>
+            <li><a href="#" class="logout">LOGOUT</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Data Diri Alumni</h2>
+        <div class="form-group">
+            <label for="nama">Nama</label>
+            <input type="text" id="nama" name="nama">
+            <label for="nisn">NISN</label>
+            <input type="text" id="nisn" name="nisn">
+        </div>
+        <div class="form-group">
+            <label for="alamat">Alamat</label>
+            <input type="text" id="alamat" name="alamat">
+            <label for="jenis_kelamin">Jenis Kelamin</label>
+            <select id="jenis_kelamin" name="jenis_kelamin">
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email">
+            <label for="no_hp">Nomor HP</label>
+            <input type="text" id="no_hp" name="no_hp">
+        </div>
+        <div class="form-group">
+            <label for="angkatan">Angkatan Ke</label>
+            <select id="angkatan" name="angkatan">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <label for="kompetensi">Kompetensi Keahlian</label>
+            <select id="kompetensi" name="kompetensi">
+                <option value="PBS">RPL</option>
+                <option value="PBS">PBS</option>
+            </select>
+        </div>
+        <h4>Kegiatan Setelah Lulus</h4>
+        <div class="activities">
+            <button>Berwirausaha</button>
+</div>
+<div class="form-group">
+    <label>Nama Usaha</label>
+    <input type="text" placeholder>
+</div>
+<div class="form-group">
+    <label>Alamat Usaha</label>
+    <input type="text" placeholder>
+</div>
+<div class="form-group">
+    <label>Nomor Telepon Tempat Usaha</label>
+    <input type="text" placeholder>
+</div>
+<div class="form-group">
+    <label>Bidang Usaha</label>
+    <input type="text" placeholder>
+</div>
+<div class="form-group">
+    <label>Jumlah Karyawan</label>
+    <input type="text" placeholder>
+</div>
+<div class="form-group">
+    <label>Bulan dan Tahun Membuka Usaha</label>
+    <input type="month">
+</div>
+<div class="buttons">
+    <button class="cancel">Batal</button>
+    <button class="submit">Simpan</button>
+</div>
+</div>
+<footer>
+    <p>Made With Kelompok 4 | &copy; 2025</p>
+</footer>
+
+</header>
+</header>
+</body>
+</html>
