@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nama"])) {
     $nama = trim($_POST["nama"]);
     if (!empty($nama)) {
-        $stmt = $conn->prepare("INSERT INTO angkatan_1 (nama) VALUES (?)");
+        $stmt = $conn->prepare("INSERT INTO angkatan_8 (nama) VALUES (?)");
         $stmt->bind_param("s", $nama);
         if ($stmt->execute()) {
             $success_message = "Nama berhasil ditambahkan!";
@@ -38,13 +38,13 @@ $search = isset($_GET['search']) ? $_GET['search'] : "";
 $search_query = $search ? "WHERE nama LIKE '%$search%'" : "";
 
 // Hitung total data
-$total_query = "SELECT COUNT(*) FROM angkatan_1 $search_query";
+$total_query = "SELECT COUNT(*) FROM angkatan_8 $search_query";
 $total_result = $conn->query($total_query);
 $total_data = $total_result->fetch_row()[0];
 $total_pages = ceil($total_data / $limit);
 
 // Ambil data dengan batas limit
-$sql = "SELECT nama FROM angkatan_1 $search_query LIMIT $start, $limit";
+$sql = "SELECT nama FROM angkatan_8 $search_query LIMIT $start, $limit";
 $result = $conn->query($sql);
 ?>
 
@@ -301,7 +301,7 @@ $result = $conn->query($sql);
 </style>
 
 <header>
-    <h1>DATA ALUMNI ANGKATAN 1 SMK-BP SUBULUL HUDA</h1>
+    <h1>DATA ALUMNI ANGKATAN 5 SMK-BP SUBULUL HUDA</h1>
 </header>
 
 <div class="container">
@@ -322,90 +322,28 @@ $result = $conn->query($sql);
         </form>
     </div>
 
-   
-    
-    <!DOCTYPE html>
-<html>
-<body>
+    <!-- Tabel Data Alumni -->
+    <table>
+        <tr>
+            <th>NAMA</th>
+        </tr>
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr><td>" . htmlspecialchars($row["nama"]) . "</td></tr>";
+            }
+        } else {
+            echo "<tr><td colspan='1'>Tidak ada data ditemukan</td></tr>";
+        }
+        ?>
+    </table>
 
-<!DOCTYPE html>
-<html>
-<body>
-
-<!DOCTYPE html>
-<html>
-<body>
-
-<?php
-// Tampilkan tabel dengan border
-echo "<table style='border: solid 1px black;'>";
-echo "<tr><th>Nama</th><th>Alamat</th><th>Email</th><th>Angkatan</th><th>Jenis Kelamin</th><th>Nomor HP</th><th>Kompetensi Keahlian</th></tr>";
-
-class TableRows extends RecursiveIteratorIterator {
-    function __construct($it) {
-        parent::__construct($it, self::LEAVES_ONLY);
-    }
-
-    public function current(): mixed {
-        return "<td style='width: 150px; border: 1px solid black;'>" . parent::current() . "</td>";
-    }
-
-    public function beginChildren(): void {
-        echo "<tr>";
-    }
-
-    public function endChildren(): void {
-        echo "</tr>\n";
-    }
-}
-
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "tspkl2025";
-
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Pastikan kolom angkatan benar-benar berisi angka
-    $stmt = $conn->prepare("SELECT nama, alamat, email, angkatan, jenis_kelamin, nomor_hp, kompetensi_keahlian FROM bekerja WHERE angkatan = :angkatan");
-    $angkatan = 1; // Ambil hanya angkatan 1
-    $stmt->bindParam(':angkatan', $angkatan, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // set hasil ke mode asosiatif
-    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-    foreach (new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k => $v) {
-        echo $v;
-    }
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-$conn = null;
-
-echo "</table>" ;
-?>
-
-</body>
-</html>
-
-
-</body>
-</html>
-
-
-</body>
-</html>      
-
-
-<!-- Pagination -->
-<div class="pagination">
-    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <a href="?page=<?= $i ?>&search=<?= htmlspecialchars($search) ?>" class="<?= $i == $page ? 'active' : '' ?>">
-            <?= $i ?>
-        </a>
+    <!-- Pagination -->
+    <div class="pagination">
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?page=<?= $i ?>&search=<?= htmlspecialchars($search) ?>" class="<?= $i == $page ? 'active' : '' ?>">
+                <?= $i ?>
+            </a>
         <?php endfor; ?>
     </div>
 </div>
@@ -418,3 +356,4 @@ echo "</table>" ;
 </body>
 </html>
 
+<?php $conn->close(); ?>

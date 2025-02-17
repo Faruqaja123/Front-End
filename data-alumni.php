@@ -1,30 +1,31 @@
 <?php
 // Konfigurasi database
 $host = "localhost";
-$username = "root";
-$password = "root"; // Sesuaikan dengan konfigurasi MySQL-mu
+$db_user = "root";
+$db_pass = "root"; // Sesuaikan dengan konfigurasi MySQL-mu
 $dbname = "tspkl2025";
 
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($host, $db_user, $db_pass, $dbname);
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Tambah Nama Alumni
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nama"])) {
-    $nama = trim($_POST["nama"]);
-    if (!empty($nama)) {
-        $stmt = $conn->prepare("INSERT INTO dataalumni (nama) VALUES (?)");
-        $stmt->bind_param("s", $nama);
+// Tambah Data Alumni (Username dan NISN)
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"]) && isset($_POST["nisn"])) {
+    $username_input = trim($_POST["username"]);
+    $nisn = trim($_POST["nisn"]);
+    if (!empty($username_input) && !empty($nisn)) {
+        $stmt = $conn->prepare("INSERT INTO login (username, nisn) VALUES (?, ?)");
+        $stmt->bind_param("ss", $username_input, $nisn);
         if ($stmt->execute()) {
-            $success_message = "Nama berhasil ditambahkan!";
+            $success_message = "Data berhasil ditambahkan!";
         } else {
-            $error_message = "Gagal menambahkan nama!";
+            $error_message = "Gagal menambahkan data!";
         }
         $stmt->close();
     } else {
-        $error_message = "Nama tidak boleh kosong!";
+        $error_message = "Username dan NISN tidak boleh kosong!";
     }
 }
 
@@ -33,18 +34,20 @@ $limit = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $limit;
 
-// Pencarian
-$search = isset($_GET['search']) ? $_GET['search'] : "";
-$search_query = $search ? "WHERE nama LIKE '%$search%'" : "";
+// Pencarian (berdasarkan username)
+$search = $_GET['search'] ?? "";
+// Pastikan nilai $search sudah di-escape untuk query dan HTML
+$search_safe = $conn->real_escape_string($search);
+$search_query = $search ? "WHERE username LIKE '%$search_safe%'" : "";
 
 // Hitung total data
-$total_query = "SELECT COUNT(*) FROM dataalumni $search_query";
+$total_query = "SELECT COUNT(*) FROM login $search_query";
 $total_result = $conn->query($total_query);
 $total_data = $total_result->fetch_row()[0];
 $total_pages = ceil($total_data / $limit);
 
 // Ambil data dengan batas limit
-$sql = "SELECT nama FROM dataalumni $search_query LIMIT $start, $limit";
+$sql = "SELECT username, nisn FROM login $search_query LIMIT $start, $limit";
 $result = $conn->query($sql);
 ?>
 
@@ -70,7 +73,6 @@ $result = $conn->query($sql);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        
         /* Navbar */
         .navbar {
             display: flex;
@@ -90,7 +92,6 @@ $result = $conn->query($sql);
         .menu a:hover {
             text-decoration: underline;
         }
-
 
         .container {
             width: 60%;
@@ -132,6 +133,7 @@ $result = $conn->query($sql);
             width: 60%;
             border: 1px solid #ccc;
             border-radius: 5px;
+            margin-bottom: 10px;
         }
 
         .form-container button {
@@ -203,166 +205,94 @@ $result = $conn->query($sql);
             margin-top: 20px;
             padding: 10px;
         }
-
+        .logo {
+        width: 250px; /* Kecilkan logo untuk layar kecil */
+    }
     </style>
     
 </head>
 <body>
-     <!-- Header Navigation -->
- <header>
-    <header class="navbar">
-        <div class="logo-container">
-            <img src="IMG/Logo.1.png" alt="Logo" class="logo">
+    <!-- Header Navigation -->
+    <header>
+        <div class="navbar">
+            <div class="logo-container">
+                <img src="IMG/Logo.1.png" alt="Logo" class="logo">
+            </div>
+            <nav class="menu">
+                <a href="index.php">BERANDA</a>
+                <a href="panduan.php">PANDUAN</a>
+                <a href="data-alumni.php">DATA ALUMNI</a>
+                <a href="kuesionerbaru.php">ISI KUESIONER</a> 
+                <a href="statistik.php">STATISTIK</a>
+                <a href="login.php" class="login">LOGOUT</a>
+            </nav>
         </div>
-        <nav class="menu">
-            <a href="index.php">BERANDA</a>
-            <a href="panduan.php">PANDUAN</a>
-            <a href="data-alumni.php">DATA ALUMNI</a>
-            <a href="kuesionerbaru.php">ISI KUESIONER</a> 
-            <a href="statistik.php">STATISTIK</a>
-            <a href="login.php" class="login">LOGOUT</a>
-        </nav>
     </header>
-</header>
 
-<style>
-/* Navbar Styling */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #007bff;
-    padding: 10px 120px;
-}
+    <header>
+        <h1>DATA ALUMNI SMK-BP SUBULUL HUDA</h1>
+    </header>
 
-/* Logo Styling */
-.logo-container {
-    display: flex;
-    align-items: center;
-}
+    <div class="container">
+        <!-- Notifikasi -->
+        <?php if (isset($success_message)) : ?>
+            <div class="message success"><?= htmlspecialchars($success_message) ?></div>
+        <?php endif; ?>
 
-.logo {
-    width: 250px; /* Sesuaikan ukuran logo */
-    height: auto;
-}
+        <?php if (isset($error_message)) : ?>
+            <div class="message error"><?= htmlspecialchars($error_message) ?></div>
+        <?php endif; ?>
 
-/* Menu Styling */
-.menu {
-    display: flex;
-    gap: 20px;
-}
+        <!-- Form Tambah Data Alumni -->
+        <div class="form-container">
+            <form method="POST">
+                <input type="text" name="username" placeholder="Tambah Username Alumni">
+                <input type="text" name="nisn" placeholder="Tambah NISN Alumni">
+                <button type="submit">Tambah</button>
+            </form>
+        </div>
 
-.menu a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 12px;
-}
+        <!-- Form Pencarian -->
+        <div class="search-bar">
+            <form method="GET">
+                <input type="text" name="search" placeholder="Search..." value="<?= htmlspecialchars($search) ?>">
+                <button type="submit">🔍</button>
+            </form>
+        </div>
 
-.menu a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .menu {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-
-    .logo {
-        width: 40px; /* Kecilkan logo untuk layar kecil */
-    }
-}
-</style>
-
-<header>
-    <h1>DATA ALUMNI SMK-BP SUBULUL HUDA</h1>
-</header>
-
-<div class="container">
-    <!-- Notifikasi -->
-    <?php if (isset($success_message)) : ?>
-        <div class="message success"><?= $success_message ?></div>
-    <?php endif; ?>
-
-    <?php if (isset($error_message)) : ?>
-        <div class="message error"><?= $error_message ?></div>
-    <?php endif; ?>
-
-    <!-- Form Tambah Nama -->
-    <div class="form-container">
-        <form method="POST">
-            <input type="text" name="nama" placeholder="Tambah Nama Alumni">
-            <button type="submit">Tambah</button>
-        </form>
-    </div>
-
-    <!-- Form Pencarian -->
-    <div class="search-bar">
-        <form method="GET">
-            <input type="text" name="search" placeholder="Search..." value="<?= htmlspecialchars($search) ?>">
-            <button type="submit">🔍</button>
-        </form>
-    </div>
-
-    <!-- Tabel Data Alumni -->
-    <table>
+        <table>
+    <tr>
+        <th>NISN</th>
+        <th>USERNAME</th>
+    </tr>
+    <?php if ($result->num_rows > 0): ?>
+        <?php while ($row = $result->fetch_assoc()): ?>
+            <tr>
+                <td><?= htmlspecialchars($row["nisn"] ?? "", ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($row["username"] ?? "", ENT_QUOTES, 'UTF-8') ?></td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
         <tr>
-            <th>NAMA</th>
+            <td colspan="2">Tidak ada data ditemukan</td>
         </tr>
-        <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr><td>" . htmlspecialchars($row["nama"]) . "</td></tr>";
-            }
-        } else {
-            echo "<tr><td colspan='1'>Tidak ada data ditemukan</td></tr>";
-        }
-        ?>
-    </table>
+    <?php endif; ?>
+</table>
 
-    <!-- Pagination -->
-    <div class="pagination">
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="?page=<?= $i ?>&search=<?= htmlspecialchars($search) ?>" class="<?= $i == $page ? 'active' : '' ?>">
-                <?= $i ?>
-            </a>
-        <?php endfor; ?>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <a href="?page=<?= $i ?>&search=<?= htmlspecialchars($search) ?>" class="<?= $i == $page ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+        </div>
     </div>
-</div>
-<div class="buttons">
-        <!-- Tombol Batal -->
-        <button type="button" class="cancel" onclick="window.location.href='status-alumni.php'">Batal</button>
 
-        <!-- Tombol Simpan -->
-        <button type="submit" class="submit">Simpan</button>
-
-        <!-- Tombol Edit (untuk memodifikasi data yang ada) -->
-        <button type="button" class="edit" onclick="window.location.href='edit-data.php'">Edit</button>
-
-        <!-- Tombol Hapus (untuk menghapus data yang ada) -->
-        <button type="button" class="delete" onclick="deleteData()">Hapus</button>
-    </div>
-</form>
-
-<script>
-    // Fungsi untuk menghapus data
-    function deleteData() {
-        var confirmation = confirm("Apakah Anda yakin ingin menghapus data ini?");
-        if (confirmation) {
-            // Arahkan ke file PHP untuk menghapus data, misalnya delete-data.php
-            window.location.href = 'delete-data.php'; // Ganti dengan URL penghapusan data yang sesuai
-        }
-<footer>
-    <p>Made With Kelompok 4 | © 2025</p>
-</footer>
+    <footer>
+        <p>Made With Kelompok 4 | © 2025</p>
+    </footer>
 
 </body>
 </html>
