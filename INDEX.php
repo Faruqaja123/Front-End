@@ -107,7 +107,7 @@
             <a href="data-alumni.php">DATA ALUMNI</a>
             <a href="kuesionerbaru.php">ISI KUESIONER</a> 
             <a href="statistik.php">STATISTIK</a>
-            <a href="login.php" class="login">LOGOUT</a>
+            <a href="logout.php" class="logout">LOGOUT</a>
         </nav>
     </header>
 </header>
